@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .choices {
+            margin-bottom: 20px;
+        }
+
+        .choice {
+            font-size: 20px;
+            padding: 15px 30px;
+            margin: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .choice:hover {
+            transform: scale(1.1);
+            background-color: #0056b3;
+        }
+
+        #result,
+        #computer-choice {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        #result {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #play-again {
+            display: none;
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #play-again:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Rock, Paper, Scissors Game</h1>
+        <div class="choices">
+            <button class="choice" id="rock">Rock</button>
+            <button class="choice" id="paper">Paper</button>
+            <button class="choice" id="scissors">Scissors</button>
+        </div>
+        <div id="result"></div>
+        <div id="computer-choice"></div>
+        <button id="play-again" class="play-again" onclick="resetGame()">Play Again</button>
+    </div>
+
+    <script>
+        // Function to determine the winner
+        function rockPaperScissors(playerChoice, computerChoice) {
+            if (playerChoice === computerChoice) {
+                return "It's a tie!";
+            }
+
+            if (
+                (playerChoice === "rock" && computerChoice === "scissors") ||
+                (playerChoice === "paper" && computerChoice === "rock") ||
+                (playerChoice === "scissors" && computerChoice === "paper")
+            ) {
+                return "Player wins!";
+            } else {
+                return "Computer wins!";
+            }
+        }
+
+        // Function to simulate the computer's choice
+        function getComputerChoice() {
+            const choices = ["rock", "paper", "scissors"];
+            return choices[Math.floor(Math.random() * choices.length)];
+        }
+
+        // Function to handle the player's choice and update the result
+        function play(playerChoice) {
+            const computerChoice = getComputerChoice();
+            const result = rockPaperScissors(playerChoice, computerChoice);
+
+            // Show the results with animations
+            document.getElementById("computer-choice").textContent = `Computer chose: ${computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)}`;
+
+            const resultDiv = document.getElementById("result");
+            resultDiv.textContent = result;
+            resultDiv.style.opacity = 1;  // Show result with fade-in animation
+
+            // Show the "Play Again" button
+            document.getElementById("play-again").style.display = "inline-block";
+
+            // Disable all choice buttons after one round
+            document.querySelectorAll(".choice").forEach(button => button.disabled = true);
+        }
+
+        // Function to reset the game
+        function resetGame() {
+            // Reset result and computer choice
+            document.getElementById("result").style.opacity = 0;
+            document.getElementById("result").textContent = "";
+            document.getElementById("computer-choice").textContent = "";
+
+            // Re-enable all choice buttons
+            document.querySelectorAll(".choice").forEach(button => button.disabled = false);
+
+            // Hide the "Play Again" button
+            document.getElementById("play-again").style.display = "none";
+        }
+
+        // Add event listeners to the buttons
+        document.getElementById("rock").addEventListener("click", () => play("rock"));
+        document.getElementById("paper").addEventListener("click", () => play("paper"));
+        document.getElementById("scissors").addEventListener("click", () => play("scissors"));
+    </script>
+
+</body>
+
+</html>
